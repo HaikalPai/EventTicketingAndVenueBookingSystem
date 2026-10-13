@@ -1,0 +1,17 @@
+{
+  "info":{"name":"Event Ticketing API - SWC3633","schema":"https://schema.getpostman.com/json/collection/v2.1.0/collection.json","description":"Use demo logins, copy access_token into collection variable token, then test endpoints."},
+  "variable":[{"key":"baseUrl","value":"http://127.0.0.1:8000"},{"key":"token","value":""}],
+  "auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},
+  "item":[
+    {"name":"Login customer","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"email\":\"customer1@demo.example.com\",\"password\":\"DemoPass123!\"}"},"url":"{{baseUrl}}/auth/login"}},
+    {"name":"List events - success","request":{"method":"GET","url":"{{baseUrl}}/events"}},
+    {"name":"Search events","request":{"method":"GET","url":"{{baseUrl}}/events?search=Tech&skip=0&limit=10"}},
+    {"name":"List venues","request":{"method":"GET","url":"{{baseUrl}}/venues"}},
+    {"name":"List my bookings","request":{"method":"GET","url":"{{baseUrl}}/bookings"}},
+    {"name":"Create booking","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"event_id\":1,\"quantity\":1}"},"url":"{{baseUrl}}/bookings"}},
+    {"name":"Missing booking - 404","request":{"method":"GET","url":"{{baseUrl}}/bookings/999999"}},
+    {"name":"Customer forbidden event creation - 403","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"name\":\"Sample Event\",\"venue_id\":1,\"starts_at\":\"2026-12-20T15:00:00\",\"ticket_limit\":20}"},"url":"{{baseUrl}}/events"}},
+    {"name":"Validation error - 422","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"event_id\":1,\"quantity\":0}"},"url":"{{baseUrl}}/bookings"}},
+    {"name":"QR external API integration","request":{"method":"GET","url":"{{baseUrl}}/bookings/1/qr"}}
+  ]
+}
